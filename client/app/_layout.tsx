@@ -52,8 +52,9 @@ export default function RootLayout() {
         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
             <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
             <Stack>
-                <Stack.Screen name='loginScreen' options={{ headerShown: false }} />
+                <Stack.Screen name='notificationScreen' options={{ headerShown: false }} />
                 <Stack.Screen name='welcomeScreen' options={{ headerShown: false }} />
+                <Stack.Screen name='loginScreen' options={{ headerShown: false }} />
             </Stack>
             <PortalHost />
         </ThemeProvider>

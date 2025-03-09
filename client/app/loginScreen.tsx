@@ -4,7 +4,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { View } from 'react-native';
 import { RootStackParamList } from '~/app/_layout';
 import { useNavigation } from 'expo-router';
-import { useColorScheme } from '~/lib/useColorScheme';
 
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -19,7 +18,6 @@ export default function Login() {
     const [emailAddress, setEmailAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [showPassword, setShowPassword] = React.useState(false);
-    const { colorScheme } = useColorScheme();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
