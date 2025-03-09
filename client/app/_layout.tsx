@@ -9,6 +9,7 @@ import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { PortalHost } from '@rn-primitives/portal';
 import { ThemeToggle } from '~/components/ThemeToggle';
+import { MenuBar } from '~/components/MenuBar';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
 
 const LIGHT_THEME: Theme = {
@@ -52,9 +53,17 @@ export default function RootLayout() {
         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
             <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
             <Stack>
+                <Stack.Screen name='loginScreen' options={{ headerShown: false }} />
+                <Stack.Screen
+                    name='index'
+                    options={{
+                        title: 'Home',
+                        headerRight: () => <ThemeToggle />,
+                        headerLeft: () => <MenuBar />,
+                    }}
+                />
                 <Stack.Screen name='notificationScreen' options={{ headerShown: false }} />
                 <Stack.Screen name='welcomeScreen' options={{ headerShown: false }} />
-                <Stack.Screen name='loginScreen' options={{ headerShown: false }} />
             </Stack>
             <PortalHost />
         </ThemeProvider>

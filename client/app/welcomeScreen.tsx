@@ -16,9 +16,6 @@ export default function WelcomeScreen() {
         <View className='flex-1 mt-10 justify-between'>
             {/* Top Content with Background */}
             <View className='items-center relative w-full h-fit-content mb-20'>
-                {' '}
-                {/* Added marginBottom here */}
-                {/* Background Image */}
                 <Image
                     source={{
                         uri: 'https://www.newnaia.com.ph/storage/page-assets/9/1/U9zwHbqJdECaRRjbsi5Ena1PDsFuxT0AxyThb2SQGHUOR4PUo8sijUF2ecol/GKPdd3sGbcWWp6zbWXDbyjfiNNcHopMiDF0c9D2l.webp',
@@ -34,7 +31,6 @@ export default function WelcomeScreen() {
                         marginTop: 100,
                     }}
                 />
-                {/* Logo (Stacked on Top) */}
                 <Image source={require('../assets/images/logo-adSpace.png')} className='h-40 w-60 self-center mt-40' resizeMode='contain' />
             </View>
 
@@ -44,7 +40,6 @@ export default function WelcomeScreen() {
                 <Text className='text-center text-gray-400 font-semibold'>The best place to advertise your products and services</Text>
             </View>
 
-            {/* Bottom Button */}
             <View className='mb-10 px-5'>
                 <Button variant='default' onPress={() => navigation.navigate('notificationScreen')} className='w-full py-3'>
                     <Text className='text-white font-semibold'>Get Started</Text>
