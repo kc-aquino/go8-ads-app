@@ -52,7 +52,7 @@ export default function RootLayout() {
     return (
         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
             <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-            <Stack>
+            <Stack initialRouteName='loginScreen'>
                 <Stack.Screen name='loginScreen' options={{ headerShown: false }} />
                 <Stack.Screen
                     name='index'
@@ -63,7 +63,7 @@ export default function RootLayout() {
                     }}
                 />
                 <Stack.Screen name='notificationScreen' options={{ headerShown: false }} />
-                <Stack.Screen name='LandingScreen' options={{ headerShown: false }} />
+                <Stack.Screen name='landingScreen' options={{ headerShown: false }} />
             </Stack>
             <PortalHost />
         </ThemeProvider>

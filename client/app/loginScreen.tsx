@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image } from 'react-native';
+import { Image, Alert } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { View } from 'react-native';
 import { RootStackParamList } from '~/app/_layout';
@@ -10,6 +10,7 @@ import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { Separator } from '~/components/ui/separator';
 import { Eye, EyeOff, Apple, Facebook } from 'lucide-react-native';
+import { login } from '~/lib/controllers/login_controller';
 
 type LoginProps = StackScreenProps<RootStackParamList, 'Login'>;
 
@@ -18,10 +19,20 @@ export default function Login() {
     const [emailAddress, setEmailAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [showPassword, setShowPassword] = React.useState(false);
+    
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+    const handleLogin = async () => {
+        try {
+          await login(emailAddress, password);
+          navigation.navigate('landingScreen');
+        } catch (error) {
+          Alert.alert('Login Error', error.message.toString());
+          console.error('Login error:', error);
+        }
+      };
 
     return (
         <View className='p-5'>
@@ -64,20 +75,20 @@ export default function Login() {
                     <Text className='text-sm text-left text-blue-400 font-semibold'>Forgot Password?</Text>
                 </Button>
 
-                <Button variant='default' size='default' onPress={() => navigation.navigate('welcomeScreen')}>
+                <Button variant='default' size='default' onPress={handleLogin}>
                     <Text>Login</Text>
                 </Button>
                 <Separator className='mt-10' />
 
                 <Text className='text-sm text-center color-gray-400 font-semibold '>Or continue with</Text>
                 <View className='flex flex-row gap-5 justify-center '>
-                    <Button variant='default' size='icon' className='rounded-full bg-red-600' onPress={() => navigation.navigate('welcomeScreen')}>
+                    <Button variant='default' size='icon' className='rounded-full bg-red-600' onPress={() => navigation.navigate('landingScreen')}>
                         <Text>G</Text>
                     </Button>
-                    <Button variant='default' size='icon' className='rounded-full bg-black ' onPress={() => navigation.navigate('welcomeScreen')}>
+                    <Button variant='default' size='icon' className='rounded-full bg-black ' onPress={() => navigation.navigate('landingScreen')}>
                         <Apple size={15} color='white' />
                     </Button>
-                    <Button variant='default' size='icon' className='rounded-full' onPress={() => navigation.navigate('welcomeScreen')}>
+                    <Button variant='default' size='icon' className='rounded-full' onPress={() => navigation.navigate('landingScreen')}>
                         <Facebook size={16} color='white' />
                     </Button>
                 </View>
