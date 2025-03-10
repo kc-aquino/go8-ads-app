@@ -7,9 +7,9 @@ import { useNavigation } from 'expo-router';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 
-type Props = StackScreenProps<RootStackParamList, 'Welcome'>;
+type Props = StackScreenProps<RootStackParamList, 'Landing'>;
 
-export default function WelcomeScreen() {
+export default function LandingScreen() {
     const navigation = useNavigation();
 
     return (
@@ -41,7 +41,7 @@ export default function WelcomeScreen() {
             </View>
 
             <View className='mb-10 px-5'>
-                <Button variant='default' onPress={() => navigation.navigate('notificationScreen')} className='w-full py-3'>
+                <Button variant='default' onPress={() => navigation.navigate('Notification')} className='w-full py-3'>
                     <Text className='text-white font-semibold'>Get Started</Text>
                 </Button>
             </View>
