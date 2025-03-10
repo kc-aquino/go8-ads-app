@@ -22,11 +22,11 @@ export default function NotificationScreen() {
             </View>
 
             <View className='mt-10 px-5 mb-5'>
-                <Button variant='default' onPress={() => navigation.navigate('index')} className='w-full py-3'>
+                <Button variant='default' onPress={() => navigation.navigate('Main')} className='w-full py-3'>
                     <Text className='text-white font-semibold'>Enable Notification</Text>
                 </Button>
 
-                <Button variant='link' onPress={() => navigation.navigate('index')} className='mt-5 self-center'>
+                <Button variant='link' onPress={() => navigation.navigate('Main')} className='mt-5 self-center'>
                     <Text className='text-blue-500 font-semibold'>Skip</Text>
                 </Button>
             </View>
