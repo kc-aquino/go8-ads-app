@@ -11,7 +11,7 @@ import { Text } from '~/components/ui/text';
 import { Separator } from '~/components/ui/separator';
 import { Eye, EyeOff, Apple, Facebook } from 'lucide-react-native';
 import { login } from '~/lib/controllers/login_controller';
-import { getUserData } from '~/lib/controllers/fetchers';
+import { getUserRole, getUserData } from '~/lib/controllers/fetchers';
 
 type LoginProps = StackScreenProps<RootStackParamList, 'Login'>;
 
@@ -28,11 +28,12 @@ export default function Login() {
     const handleLogin = async () => {
         try {
           await login(emailAddress, password);
-          const data = await getUserData();
-          if (data.userRole === 'admin') {
+          const role = await getUserRole();
+          const user = await getUserData();
+          if (role === 'admin') {
             Alert.alert("This app is for users only. Please use the web app for admin access.");
           } else {
-            Alert.alert(`Welcome: ${data.userScreen.name}`);
+            Alert.alert(`Welcome: ${user.name}`);
             navigation.navigate('landingScreen');
           }
         } catch (error) {

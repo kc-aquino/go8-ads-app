@@ -6,7 +6,7 @@ export async function login(username: string, password: string) {
     const apiEndpoint = extra?.apiUrl;
   try {
 
-    const response = await fetch(apiEndpoint + "/auth/login", {
+    const response = await fetch(apiEndpoint + "/api/auth/login", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
