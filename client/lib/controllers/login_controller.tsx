@@ -23,6 +23,7 @@ export async function login(username: string, password: string) {
       await SecureStore.setItemAsync('data', JSON.stringify(data), {
         keychainAccessible: SecureStore.ALWAYS_THIS_DEVICE_ONLY
       });
+      return data.userRole;
     } else {
       throw new Error('Your Password or Username is incorrect');
     }
