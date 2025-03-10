@@ -8,6 +8,7 @@ import { Separator } from '~/components/ui/separator';
 import { Eye, EyeOff, Apple, Facebook } from 'lucide-react-native';
 import { login } from '~/lib/controllers/login_controller';
 import { getUserRole, getUserData } from '~/lib/controllers/fetchers';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function Login() {
     const navigation = useNavigation();
@@ -27,7 +28,7 @@ export default function Login() {
                 Alert.alert('This app is for users only. Please use the web app for admin access.');
             } else {
                 Alert.alert(`Welcome: ${user.name}`);
-                navigation.navigate('landingScreen');
+                navigation.navigate('Landing');
             }
         } catch (error) {
             Alert.alert('Login Error', error.message.toString());
@@ -38,54 +39,57 @@ export default function Login() {
     return (
         <View className='p-5'>
             <StatusBar hidden style='auto' />
-            <Image source={require('../assets/images/logo-adSpace.png')} className='w-full h-40 self-center mt-20 mb-10 ' />
+            <Image source={useColorScheme().colorScheme === 'dark'
+                 ? require('../assets/images/logo-adSpaceLight.png')
+                 : require('../assets/images/logo-adSpaceDark.png')
+            }
+                className='w-full h-40 self-center mt-20 mb-10' 
+            />
             <Text className='text-4xl font-bold mb-2'>Welcome!</Text>
             <View className='flex flex-col gap-5 mt-5 '>
+            <Input
+                placeholder='Email Address'
+                value={emailAddress}
+                onChangeText={setEmailAddress}
+                keyboardType='email-address'
+                autoCapitalize='none'
+            />
+            <View className='relative flex flex-row items-center gap-2'>
                 <Input
-                    placeholder='Email Address'
-                    value={emailAddress}
-                    onChangeText={setEmailAddress}
-                    keyboardType='email-address'
-                    autoCapitalize='none'
+                placeholder='Password'
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+                className='flex-1 pr-10 h-10'
                 />
-                <View className='relative flex flex-row items-center gap-2'>
-                    <Input
-                        placeholder='Password'
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry={!showPassword}
-                        className='flex-1 pr-10 h-10'
-                    />
-                    <Button
-                        variant='ghost'
-                        size='icon'
-                        style={{ position: 'absolute', right: 8, top: '50%', transform: [{ translateY: '-50%' }] }}
-                        onPress={togglePasswordVisibility}
-                    >
-                        {showPassword ? <Eye size={20} color='black' /> : <EyeOff size={20} color='black' />}
-                    </Button>
-                </View>
-                <Button variant='link' size='default' onPress={() => navigation.navigate('forgotPasswordScreen')}>
-                    <Text className='text-sm text-blue-400 font-semibold'>Forgot Password?</Text>
+                <Button
+                variant='ghost'
+                size='icon'
+                style={{ position: 'absolute', right: 8, top: '50%', transform: [{ translateY: '-50%' }] }}
+                onPress={togglePasswordVisibility}
+                >
+                {showPassword ? <Eye size={20} color='black' /> : <EyeOff size={20} color='black' />}
                 </Button>
+            </View>
+            
 
-                <Button variant='default' size='default' onPress={() => navigation.navigate('Landing')}>
-                    <Text>Login</Text>
+            <Button variant='default' size='default' onPress={handleLogin}>
+                <Text>Login</Text>
+            </Button>
+
+            <Separator className='mt-10' />
+            <Text className='text-sm text-center text-gray-400 font-semibold'>Or continue with</Text>
+            <View className='flex flex-row gap-5 justify-center '>
+                <Button variant='default' size='icon' className='rounded-full bg-red-600'>
+                <Text>G</Text>
                 </Button>
-
-                <Separator className='mt-10' />
-                <Text className='text-sm text-center text-gray-400 font-semibold'>Or continue with</Text>
-                <View className='flex flex-row gap-5 justify-center '>
-                    <Button variant='default' size='icon' className='rounded-full bg-red-600'>
-                        <Text>G</Text>
-                    </Button>
-                    <Button variant='default' size='icon' className='rounded-full bg-black'>
-                        <Apple size={15} color='white' />
-                    </Button>
-                    <Button variant='default' size='icon' className='rounded-full'>
-                        <Facebook size={16} color='white' />
-                    </Button>
-                </View>
+                <Button variant='default' size='icon' className='rounded-full bg-black'>
+                <Apple size={15} color='white' />
+                </Button>
+                <Button variant='default' size='icon' className='rounded-full'>
+                <Facebook size={16} color='white' />
+                </Button>
+            </View>
             </View>
         </View>
     );
