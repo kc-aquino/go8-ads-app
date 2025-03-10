@@ -21,13 +21,15 @@ export default function Login() {
     const handleLogin = async () => {
         try {
             await login(emailAddress, password);
+            setEmailAddress('');
+            setPassword('');
             const role = await getUserRole();
             const user = await getUserData();
             if (role === 'admin') {
                 Alert.alert('This app is for users only. Please use the web app for admin access.');
             } else {
                 Alert.alert(`Welcome: ${user.name}`);
-                navigation.navigate('landingScreen');
+                navigation.navigate('Landing');
             }
         } catch (error) {
             Alert.alert('Login Error', error.message.toString());
@@ -69,7 +71,7 @@ export default function Login() {
                     <Text className='text-sm text-blue-400 font-semibold'>Forgot Password?</Text>
                 </Button>
 
-                <Button variant='default' size='default' onPress={() => navigation.navigate('Landing')}>
+                <Button variant='default' size='default' onPress={handleLogin}>
                     <Text>Login</Text>
                 </Button>
 

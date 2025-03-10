@@ -31,3 +31,8 @@ export async function login(username: string, password: string) {
     throw error;
   }
 }
+
+export async function logout() {
+  await SecureStore.deleteItemAsync('auth_token');
+  await SecureStore.deleteItemAsync('data');
+}

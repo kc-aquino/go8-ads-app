@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Text } from '~/components/ui/text';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { User } from 'lucide-react-native';
+import { logout } from '~/lib/controllers/login_controller';
 
 const Drawer = createDrawerNavigator();
 const GITHUB_AVATAR_URI = 'https://i.pinimg.com/236x/da/0b/74/da0b74e8ab5df78e54b3a0f5db603d29.jpg';
@@ -33,7 +34,7 @@ function CustomDrawerContent(props) {
             <DrawerItem label='Appearance' onPress={() => props.navigation.navigate('Main')} />
             <DrawerItem label='Language' onPress={() => props.navigation.navigate('Main')} />
             <DrawerItem label='Privacy & Security' onPress={() => props.navigation.navigate('Main')} />
-            <DrawerItem label='Logout' onPress={() => props.navigation.navigate('Main')} />
+            <DrawerItem label='Logout' onPress={() => {logout;props.navigation.navigate('Login')}} />
         </DrawerContentScrollView>
     );
 }
