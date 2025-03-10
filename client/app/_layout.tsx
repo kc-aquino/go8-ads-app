@@ -63,7 +63,7 @@ export default function RootLayout() {
                     }}
                 />
                 <Stack.Screen name='notificationScreen' options={{ headerShown: false }} />
-                <Stack.Screen name='welcomeScreen' options={{ headerShown: false }} />
+                <Stack.Screen name='LandingScreen' options={{ headerShown: false }} />
             </Stack>
             <PortalHost />
         </ThemeProvider>
