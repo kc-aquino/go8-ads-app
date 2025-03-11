@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Keyboard } from 'react-native';
-import { Search } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { View, TextInput, Modal, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { Search, XCircle } from 'lucide-react-native';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
 import { useColorScheme } from '~/lib/useColorScheme';
@@ -23,19 +23,17 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
     const { isDarkColorScheme } = useColorScheme();
     const [flightNumber, setFlightNumber] = useState<string>('');
     const [flightInfo, setFlightInfo] = useState<Flight | null>(null);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (flightNumber.trim() !== '') {
-                const foundFlight = flightSchedule.find(flight => flight.flight === parseInt(flightNumber.trim(), 10));
-                setFlightInfo(foundFlight || null);
-            } else {
-                setFlightInfo(null);
-            }
-        }, 300); // Debounce for 300ms to optimize performance
-
-        return () => clearTimeout(timer);
-    }, [flightNumber, flightSchedule]);
+    const handleSearchFlight = () => {
+        if (flightNumber.trim() !== '') {
+            const foundFlight = flightSchedule.find(flight => flight.flight === parseInt(flightNumber.trim(), 10));
+            setFlightInfo(foundFlight || null);
+            setIsModalVisible(true); // Show the modal after searching
+        } else {
+            setFlightInfo(null);
+        }
+    };
 
     const FlightInfoItem: React.FC<{ label: string; value?: string | number }> = ({ label, value }) => (
         <View className='w-1/3 py-1'>
@@ -43,6 +41,9 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
             <Text className={`text-sm ${isDarkColorScheme ? 'text-white' : 'text-black'}`}>{value || 'N/A'}</Text>
         </View>
     );
+
+    const { width, height } = Dimensions.get('window');
+    const isPortrait = height > width;
 
     return (
         <Card className={`max-w-full mt-2 rounded-xl w-full ${isDarkColorScheme ? 'bg-gray-800' : 'bg-[#007AFF]'}`}>
@@ -62,6 +63,7 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
                             onChangeText={setFlightNumber}
                             returnKeyType='done'
                             blurOnSubmit={false}
+                            onSubmitEditing={handleSearchFlight}
                             accessible
                             accessibilityLabel='Enter your flight number'
                         />
@@ -81,6 +83,7 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
                                 onChangeText={setFlightNumber}
                                 returnKeyType='done'
                                 blurOnSubmit={false}
+                                onSubmitEditing={handleSearchFlight} // Trigger search on "done"
                                 accessible
                                 accessibilityLabel='Enter flight number'
                             />
@@ -125,6 +128,30 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
                     </View>
                 </CardContent>
             )}
+
+            {/* Modal for Ad */}
+            <Modal visible={isModalVisible} transparent={true} animationType='slide' onRequestClose={() => setIsModalVisible(false)}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                    <View
+                        style={{
+                            width: isPortrait ? width : height, // Full width/height based on orientation
+                            height: isPortrait ? height : width, // Full height/width based on orientation
+                            position: 'relative', // For absolute positioning of the close button
+                        }}
+                    >
+                        {/* Close Button */}
+                        <TouchableOpacity onPress={() => setIsModalVisible(false)} style={{ position: 'absolute', top: 20, right: 20, zIndex: 1 }}>
+                            <XCircle size={24} color='white' />
+                        </TouchableOpacity>
+
+                        {/* Full-Size Image */}
+                        <Image
+                            source={require('~/assets/images/ads/BurgerKing_ad_2.png')}
+                            style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
+                        />
+                    </View>
+                </View>
+            </Modal>
         </Card>
     );
 };
