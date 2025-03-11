@@ -8,6 +8,7 @@ import { useColorScheme } from '~/lib/useColorScheme';
 export default function Screen() {
     const colorScheme = useColorScheme().colorScheme;
     const { width } = Dimensions.get('window');
+
     return (
         <View className='flex-1 w-full bg-secondary/30 '>
             <ScrollView contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 100 }} showsVerticalScrollIndicator={false}>

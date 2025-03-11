@@ -3,8 +3,24 @@ import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Table, TableRow, TableCell, TableHeader } from '~/components/ui/table';
 import { Text } from '~/components/ui/text';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { useColorScheme } from '~/lib/useColorScheme';
 
-const TableArrival_Departure = ({ flightSchedule }) => {
+interface Flight {
+    destination: string;
+    flight: number;
+    airlineName: string;
+    departureDate: string;
+    departureTime: string;
+    ETA_date: string;
+    ETA_time: string;
+}
+
+interface TableArrival_DepartureProps {
+    flightSchedule: Flight[];
+}
+
+const TableArrival_Departure = ({ flightSchedule }: TableArrival_DepartureProps) => {
+    const { isDarkColorScheme } = useColorScheme();
     const [activeTab, setActiveTab] = useState<'Arrival' | 'Departure'>('Arrival');
     const currentDate = new Date().toLocaleDateString('en-US');
     const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -13,22 +29,22 @@ const TableArrival_Departure = ({ flightSchedule }) => {
         destination: flight.destination,
         flight: flight.flight,
         airline: flight.airlineName,
-        time: activeTab === 'Arrival' ? `${flight.ETA_date}  ${flight.ETA_time}` : `${flight.departureDate}  ${flight.departureTime}`,
+        time: activeTab === 'Arrival' ? `${flight.ETA_date} ${flight.ETA_time}` : `${flight.departureDate} ${flight.departureTime}`,
     }));
 
     return (
         <View className='w-full mt-2 pb-2'>
             {/* Flight Schedule Card */}
-            <Card className='max-w-full bg-[#007AFF] text-white rounded-xl w-full'>
+            <Card className={`max-w-full rounded-xl w-full ${isDarkColorScheme ? 'bg-gray-800' : 'bg-[#007AFF]'}`}>
                 <CardHeader className='items-center rounded-xl p-1'>
-                    <CardTitle className='text-3xl font-bold text-white my-2'>{activeTab}</CardTitle>
+                    <CardTitle className={`text-3xl font-bold my-2 ${isDarkColorScheme ? 'text-white' : 'text-gray-100'}`}>{activeTab}</CardTitle>
                 </CardHeader>
 
                 <CardContent className='p-0'>
                     <ScrollView horizontal>
                         <Table className='w-full min-w-full table-fixed border-separate'>
                             <TableHeader>
-                                <TableRow className='bg-[#1a8dd8]'>
+                                <TableRow className={`${isDarkColorScheme ? 'bg-gray-700' : 'bg-[#1a8dd8]'}`}>
                                     <TableCell className='px-4 py-2 w-1/4'>
                                         <Text className='text-white'>Destination</Text>
                                     </TableCell>
@@ -44,18 +60,29 @@ const TableArrival_Departure = ({ flightSchedule }) => {
                                 </TableRow>
                             </TableHeader>
                             {filteredFlights.map((flight, index) => (
-                                <TableRow key={index} className={`${index % 2 === 0 ? 'bg-white' : 'bg-[#d6ebfb]'}`}>
+                                <TableRow
+                                    key={index}
+                                    className={`${
+                                        isDarkColorScheme
+                                            ? index % 2 === 0
+                                                ? 'bg-gray-900'
+                                                : 'bg-gray-700'
+                                            : index % 2 === 0
+                                            ? 'bg-white'
+                                            : 'bg-[#d6ebfb]'
+                                    }`}
+                                >
                                     <TableCell className='px-4 py-2 w-1/4'>
-                                        <Text className='text-black'>{flight.destination}</Text>
+                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'}`}>{flight.destination}</Text>
                                     </TableCell>
-                                    <TableCell className='px-4 py-2 w-1/4 '>
-                                        <Text className='text-black'>{flight.flight}</Text>
+                                    <TableCell className='px-4 py-2 w-1/4'>
+                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'}`}>{flight.flight}</Text>
                                     </TableCell>
                                     <TableCell className='px-0 py-2 w-1/4'>
-                                        <Text className='text-black'>{flight.airline}</Text>
+                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'}`}>{flight.airline}</Text>
                                     </TableCell>
                                     <TableCell className='px-6 py-2 w-1/4 whitespace-nowrap truncate'>
-                                        <Text className='text-black'>{flight.time}</Text>
+                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'}`}>{flight.time}</Text>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -71,20 +98,48 @@ const TableArrival_Departure = ({ flightSchedule }) => {
                 </CardContent>
             </Card>
 
-            {/* Tabs Section (Moved Outside the Card) */}
-            <View className='flex-row justify-center mt-2 mb-4 p-2 bg-[#007AFF] rounded-lg w-full gap-x-4 '>
+            {/* Tabs Section */}
+            <View className={`flex-row justify-center mt-2 mb-4 p-2 rounded-lg w-full gap-x-4 ${isDarkColorScheme ? 'bg-gray-800' : 'bg-[#007AFF]'}`}>
                 <TouchableOpacity
                     onPress={() => setActiveTab('Arrival')}
-                    className={`flex-1 px-6 py-3 rounded-lg ${activeTab === 'Arrival' ? 'bg-white' : 'bg-[#007AFF]'}`}
+                    className={`flex-1 px-6 py-3 rounded-lg ${
+                        activeTab === 'Arrival'
+                            ? isDarkColorScheme
+                                ? 'bg-gray-700'
+                                : 'bg-white'
+                            : isDarkColorScheme
+                            ? 'bg-gray-900'
+                            : 'bg-[#007AFF]'
+                    }`}
                 >
-                    <Text className={`text-lg font-bold text-center ${activeTab === 'Arrival' ? 'text-[#007AFF]' : 'text-white'}`}>Arrival</Text>
+                    <Text
+                        className={`text-lg font-bold text-center ${
+                            activeTab === 'Arrival' ? (isDarkColorScheme ? 'text-white' : 'text-[#007AFF]') : 'text-white'
+                        }`}
+                    >
+                        Arrival
+                    </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={() => setActiveTab('Departure')}
-                    className={`flex-1 px-6 py-3 rounded-lg ${activeTab === 'Departure' ? 'bg-white' : 'bg-[#007AFF]'}`}
+                    className={`flex-1 px-6 py-3 rounded-lg ${
+                        activeTab === 'Departure'
+                            ? isDarkColorScheme
+                                ? 'bg-gray-700'
+                                : 'bg-white'
+                            : isDarkColorScheme
+                            ? 'bg-gray-900'
+                            : 'bg-[#007AFF]'
+                    }`}
                 >
-                    <Text className={`text-lg font-bold text-center ${activeTab === 'Departure' ? 'text-[#007AFF]' : 'text-white'}`}>Departure</Text>
+                    <Text
+                        className={`text-lg font-bold text-center ${
+                            activeTab === 'Departure' ? (isDarkColorScheme ? 'text-white' : 'text-[#007AFF]') : 'text-white'
+                        }`}
+                    >
+                        Departure
+                    </Text>
                 </TouchableOpacity>
             </View>
         </View>

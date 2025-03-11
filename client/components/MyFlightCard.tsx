@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Keyboard } from 'react-native';
 import { Search } from 'lucide-react-native';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 interface Flight {
     destination: string;
@@ -19,59 +20,69 @@ interface MyFlightCardProps {
 }
 
 const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
+    const { isDarkColorScheme } = useColorScheme();
     const [flightNumber, setFlightNumber] = useState<string>('');
     const [flightInfo, setFlightInfo] = useState<Flight | null>(null);
 
-    const handleSearch = () => {
-        Keyboard.dismiss();
-        const foundFlight = flightSchedule.find(flight => flight.flight === parseInt(flightNumber, 10));
-        setFlightInfo(foundFlight || null);
-    };
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (flightNumber.trim() !== '') {
+                const foundFlight = flightSchedule.find(flight => flight.flight === parseInt(flightNumber.trim(), 10));
+                setFlightInfo(foundFlight || null);
+            } else {
+                setFlightInfo(null);
+            }
+        }, 300); // Debounce for 300ms to optimize performance
+
+        return () => clearTimeout(timer);
+    }, [flightNumber, flightSchedule]);
 
     const FlightInfoItem: React.FC<{ label: string; value?: string | number }> = ({ label, value }) => (
         <View className='w-1/3 py-1'>
-            <Text className='text-xs font-bold text-white'>{label}</Text>
-            <Text className='text-sm text-white'>{value || 'N/A'}</Text>
+            <Text className={`text-xs font-bold ${isDarkColorScheme ? 'text-gray-300' : 'text-gray-700'}`}>{label}</Text>
+            <Text className={`text-sm ${isDarkColorScheme ? 'text-white' : 'text-black'}`}>{value || 'N/A'}</Text>
         </View>
     );
 
     return (
-        <Card className='max-w-full mt-2 bg-[#007AFF] text-white rounded-xl w-full'>
+        <Card className={`max-w-full mt-2 rounded-xl w-full ${isDarkColorScheme ? 'bg-gray-800' : 'bg-[#007AFF]'}`}>
             {!flightInfo ? (
                 <CardHeader className='items-center'>
-                    <CardTitle className='text-3xl font-bold text-white'>Good day, Maloi!</CardTitle>
-                    <CardDescription className='mt-2 text-sm text-white text-center w-full' numberOfLines={1}>
+                    <CardTitle className={`text-3xl font-bold ${isDarkColorScheme ? 'text-white' : 'text-gray-100'}`}>Good day, Maloi!</CardTitle>
+                    <CardDescription className={`mt-2 text-sm text-center w-full ${isDarkColorScheme ? 'text-gray-400' : 'text-white'}`}>
                         Search your flight number to show your flight information.
                     </CardDescription>
-                    <View className='mt-4 flex-row items-center bg-white rounded-lg px-3'>
-                        <Search size={16} color='gray' />
+                    <View className={`mt-4 flex-row items-center rounded-lg px-3 ${isDarkColorScheme ? 'bg-slate-700' : 'bg-white'}`}>
+                        <Search size={16} color={isDarkColorScheme ? 'lightgray' : 'gray'} />
                         <TextInput
-                            className='ml-3 text-black text-sm flex-1'
+                            className={`ml-3 text-sm flex-1 ${isDarkColorScheme ? 'text-white' : 'text-black'}`}
                             placeholder='Search flight number'
-                            placeholderTextColor='gray'
+                            placeholderTextColor={isDarkColorScheme ? 'lightgray' : 'gray'}
                             value={flightNumber}
                             onChangeText={setFlightNumber}
                             returnKeyType='done'
                             blurOnSubmit={false}
-                            onSubmitEditing={handleSearch}
+                            accessible
+                            accessibilityLabel='Enter your flight number'
                         />
                     </View>
                 </CardHeader>
             ) : (
                 <CardContent>
                     <View className='flex-row items-center justify-between mt-5'>
-                        <CardTitle className='text-2xl font-bold text-white'>My Flight</CardTitle>
-                        <View className='flex-row items-center bg-white rounded-lg px-2 pr-4'>
-                            <Search size={12} color='gray' />
+                        <CardTitle className={`text-2xl font-bold ${isDarkColorScheme ? 'text-white' : 'text-gray-100'}`}>My Flight</CardTitle>
+                        <View className={`flex-row items-center rounded-lg px-2 pr-4 ${isDarkColorScheme ? 'bg-gray-800' : 'bg-white'}`}>
+                            <Search size={12} color={isDarkColorScheme ? 'lightgray' : 'gray'} />
                             <TextInput
-                                className='ml-2 text-black text-xs'
+                                className={`ml-2 text-xs ${isDarkColorScheme ? 'text-white' : 'text-black'}`}
                                 placeholder='Flight #'
-                                placeholderTextColor='gray'
+                                placeholderTextColor={isDarkColorScheme ? 'lightgray' : 'gray'}
                                 value={flightNumber}
                                 onChangeText={setFlightNumber}
                                 returnKeyType='done'
                                 blurOnSubmit={false}
-                                onSubmitEditing={handleSearch}
+                                accessible
+                                accessibilityLabel='Enter flight number'
                             />
                         </View>
                     </View>
@@ -108,7 +119,9 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
                     </View>
 
                     <View className='mt-2'>
-                        <Text className='text-xs text-gray-200 self-end'>Last updated: 6:03 PM, May 1, 2025</Text>
+                        <Text className={`text-xs self-end ${isDarkColorScheme ? 'text-gray-500' : 'text-gray-200'}`}>
+                            Last updated: 6:03 PM, May 1, 2025
+                        </Text>
                     </View>
                 </CardContent>
             )}
@@ -116,7 +129,6 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
     );
 };
 
-// Ensure displayName is set
 MyFlightCard.displayName = 'MyFlightCard';
 
 export default MyFlightCard;
