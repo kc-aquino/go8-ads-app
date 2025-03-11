@@ -17,6 +17,7 @@ const GITHUB_AVATAR_URI = 'https://i.pinimg.com/236x/da/0b/74/da0b74e8ab5df78e54
 
 function CustomDrawerContent(props) {
     const [modalVisible, setModalVisible] = React.useState(false);
+    const { isDarkColorScheme } = useColorScheme();
 
     const handleLogout = () => {
         setModalVisible(false);
@@ -33,7 +34,16 @@ function CustomDrawerContent(props) {
                         <User size={48} color='black' />
                     </AvatarFallback>
                 </Avatar>
-                <Text style={{ marginTop: 10, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Mary Loi Yves Ricalde</Text>
+                <Text
+                    style={{
+                        marginTop: 10,
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                        color: isDarkColorScheme ? 'white' : 'black',
+                    }}
+                >
+                    Mary Loi Yves Ricalde
+                </Text>
                 <Text style={{ fontSize: 16, color: 'gray' }}>@maryloiiii3</Text>
             </View>
             <DrawerItem label='Flight History' onPress={() => props.navigation.navigate('Main')} />
@@ -43,12 +53,7 @@ function CustomDrawerContent(props) {
             <DrawerItem label='Privacy & Security' onPress={() => props.navigation.navigate('Main')} />
             <DrawerItem label='Logout' onPress={() => setModalVisible(true)} />
 
-            <Modal
-                animationType='slide'
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
+            <Modal animationType='slide' transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <View style={{ width: 300, padding: 20, backgroundColor: 'rgba(3, 138, 255, 1)', borderRadius: 10 }}>
                         <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 10, color: 'white' }}>Log out</Text>
@@ -106,7 +111,7 @@ export default function DrawerNavigator() {
 
     return (
         <Drawer.Navigator
-            initialRouteName='Landing'
+            initialRouteName='Main'
             drawerContent={props => <CustomDrawerContent {...props} />}
             screenOptions={{
                 headerShown: false,
@@ -121,6 +126,7 @@ export default function DrawerNavigator() {
                 component={HomeScreen}
                 options={({ navigation }) => ({
                     headerShown: true,
+                    headerTitle: 'Flight Schedule',
                     headerLeft: () => (
                         <Pressable onPress={() => navigation.toggleDrawer()}>
                             <View style={{ marginLeft: 15, marginRight: 10 }}>
