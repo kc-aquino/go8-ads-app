@@ -41,57 +41,58 @@ export default function Login() {
     return (
         <View className='p-5'>
             <StatusBar hidden style='auto' />
-            <Image source={useColorScheme().colorScheme === 'dark'
-                 ? require('../assets/images/logo-adSpaceLight.png')
-                 : require('../assets/images/logo-adSpaceDark.png')
-            }
-                className='w-full h-40 self-center mt-20 mb-10' 
+            <Image
+                source={
+                    useColorScheme().colorScheme === 'dark'
+                        ? require('../assets/images/logo-adSpaceLight.png')
+                        : require('../assets/images/logo-adSpaceDark.png')
+                }
+                className='w-full h-40 self-center mt-20 mb-10 sm:mb-10 md:mb-12 lg:mb-14 xl:mb-16'
             />
             <Text className='text-4xl font-bold mb-2'>Welcome!</Text>
             <View className='flex flex-col gap-5 mt-5 '>
-            <Input
-                placeholder='Email Address'
-                value={emailAddress}
-                onChangeText={setEmailAddress}
-                keyboardType='email-address'
-                autoCapitalize='none'
-            />
-            <View className='relative flex flex-row items-center gap-2'>
                 <Input
-                placeholder='Password'
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-                className='flex-1 pr-10 h-10'
+                    placeholder='Email Address'
+                    value={emailAddress}
+                    onChangeText={setEmailAddress}
+                    keyboardType='email-address'
+                    autoCapitalize='none'
                 />
-                <Button
-                variant='ghost'
-                size='icon'
-                style={{ position: 'absolute', right: 8, top: '50%', transform: [{ translateY: '-50%' }] }}
-                onPress={togglePasswordVisibility}
-                >
-                {showPassword ? <Eye size={20} color='black' /> : <EyeOff size={20} color='black' />}
-                </Button>
-            </View>
-            
+                <View className='relative flex flex-row items-center gap-2'>
+                    <Input
+                        placeholder='Password'
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={!showPassword}
+                        className='flex-1 pr-10 h-10'
+                    />
+                    <Button
+                        variant='ghost'
+                        size='icon'
+                        style={{ position: 'absolute', right: 8, top: '50%', transform: [{ translateY: '-50%' }] }}
+                        onPress={togglePasswordVisibility}
+                    >
+                        {showPassword ? <Eye size={20} color='black' /> : <EyeOff size={20} color='black' />}
+                    </Button>
+                </View>
 
-            <Button variant='default' size='default' onPress={handleLogin}>
-                <Text>Login</Text>
-            </Button>
+                <Button variant='default' size='default' onPress={handleLogin}>
+                    <Text>Login</Text>
+                </Button>
 
-            <Separator className='mt-10' />
-            <Text className='text-sm text-center text-gray-400 font-semibold'>Or continue with</Text>
-            <View className='flex flex-row gap-5 justify-center '>
-                <Button variant='default' size='icon' className='rounded-full bg-red-600'>
-                <Text>G</Text>
-                </Button>
-                <Button variant='default' size='icon' className='rounded-full bg-black'>
-                <Apple size={15} color='white' />
-                </Button>
-                <Button variant='default' size='icon' className='rounded-full'>
-                <Facebook size={16} color='white' />
-                </Button>
-            </View>
+                <Separator className='mt-10' />
+                <Text className='text-sm text-center text-gray-400 font-semibold'>Or continue with</Text>
+                <View className='flex flex-row gap-5 justify-center '>
+                    <Button variant='default' size='icon' className='rounded-full bg-red-600'>
+                        <Text>G</Text>
+                    </Button>
+                    <Button variant='default' size='icon' className='rounded-full bg-black'>
+                        <Apple size={15} color='white' />
+                    </Button>
+                    <Button variant='default' size='icon' className='rounded-full'>
+                        <Facebook size={16} color='white' />
+                    </Button>
+                </View>
             </View>
         </View>
     );
