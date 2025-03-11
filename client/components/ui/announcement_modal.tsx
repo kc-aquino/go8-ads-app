@@ -48,7 +48,7 @@ const AnnouncementModal: React.FC<AnnouncementModalProps> = ({ announcement, dur
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // Vignette effect
+    backgroundColor: "rgba(0, 0, 0, 0.6)", 
     justifyContent: "center",
     alignItems: "center",
   },
@@ -58,16 +58,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "80%",
     alignItems: "center",
+    borderColor: "#73C7C7",  
+    borderWidth: 2,     
   },
   modalTitle: {
     fontSize: 50,
-    fontWeight: "bold",
+    fontWeight: "bold",  
     marginBottom: 10,
     textAlign: "center",
+    fontFamily: "Poller One",
   },
   modalText: {
     fontSize: 16,
     textAlign: "center",
+    fontFamily: "Cormorant Garamond", 
   },
 });
 
