@@ -28,3 +28,9 @@ export async function getAdsData(): Promise<any | null> {
     const data = await getData();
     return data ? data.userAds : null;
   }
+
+//get user id
+export async function getUserId(): Promise<string| null> {
+    const data = await getData();
+    return data ? data.userScreen.id.toString(): null;
+  }
