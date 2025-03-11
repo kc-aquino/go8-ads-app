@@ -48,20 +48,22 @@ export function AnnouncementComponent() {
     const eventName = `announcementToScreen-${id}`;
     const handleAnnouncement = async (newAnnouncement: any) => {
       try {
-        console.log("Received announcement:", newAnnouncement);
-        setAnnouncement(newAnnouncement);
+      console.log("Received announcement:", newAnnouncement);
+      setAnnouncement(newAnnouncement);
 
-        // Trigger local notification when an announcement is received
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: "New Announcement!",
-            body: newAnnouncement.message || "You have a new announcement.",
-            data: newAnnouncement,
-          },
-          trigger: null, // Shows immediately
-        });
+      await Notifications.scheduleNotificationAsync({
+        content: {
+        title: "📢 New Announcement!",
+        body: newAnnouncement.message || "You have a new announcement.",
+        data: newAnnouncement,
+        sound: "default",
+        priority: Notifications.AndroidNotificationPriority.HIGH,
+        color: "#FFC100#98D8EF", 
+        },
+        trigger: null, 
+      });
       } catch (error) {
-        console.error("Error handling announcement:", error);
+      console.error("Error handling announcement:", error);
       }
     };
 
