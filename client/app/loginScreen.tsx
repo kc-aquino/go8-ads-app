@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StatusBar, Alert } from 'react-native';
+import { Image, View, StatusBar, Alert, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -16,81 +16,129 @@ export default function Login() {
     const [password, setPassword] = React.useState('');
     const [showPassword, setShowPassword] = React.useState(false);
 
+    const [emailMessage, setEmailMessage] = React.useState<string | null>(null);
+    const [passwordMessage, setPasswordMessage] = React.useState<string | null>(null);
+
+    const resetMessages = () => {
+        setEmailMessage(null);
+        setPasswordMessage(null);
+    };
+
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
     const handleLogin = async () => {
+        resetMessages(); 
+
+        let isValid = true;
+        
+        
+        if (!emailAddress) {
+            setEmailMessage('Email is required');
+            isValid = false;
+        }
+        if (!password) {
+            setPasswordMessage('Password is required');
+            isValid = false;
+        }
+
+        if (!isValid) return; 
+
         try {
             await login(emailAddress, password);
             setEmailAddress('');
             setPassword('');
             const role = await getUserRole();
             const user = await getUserData();
+
             if (role === 'admin') {
-                Alert.alert('This app is for users only. Please use the web app for admin access.');
+                setEmailMessage('This app is for users only. Please use the web app for admin access.');
             } else {
-                Alert.alert(`Welcome: ${user.name}`);
+                setEmailMessage(`Welcome: ${user.name}`);
                 navigation.navigate('Landing');
             }
         } catch (error) {
-            Alert.alert('Login Error', error.message.toString());
+            setPasswordMessage(error.message.toString());
             console.error('Login error:', error);
         }
     };
 
     return (
-        <View className='p-5'>
-            <StatusBar hidden style='auto' />
+        <View className="p-5">
+            <StatusBar hidden style="auto" />
             <Image
                 source={
                     useColorScheme().colorScheme === 'dark'
                         ? require('../assets/images/logo-adSpaceLight.png')
                         : require('../assets/images/logo-adSpaceDark.png')
                 }
-                className='w-full h-40 self-center mt-20 mb-10 sm:mb-10 md:mb-12 lg:mb-14 xl:mb-16'
+                className="w-full h-40 self-center mt-20 mb-10 sm:mb-10 md:mb-12 lg:mb-14 xl:mb-16"
             />
-            <Text className='text-4xl font-bold mb-2'>Welcome!</Text>
-            <View className='flex flex-col gap-5 mt-5 '>
+            {}
+            <View className="flex flex-col gap-5 mt-5">
                 <Input
-                    placeholder='Email Address'
+                    placeholder="Email Address"
                     value={emailAddress}
                     onChangeText={setEmailAddress}
-                    keyboardType='email-address'
-                    autoCapitalize='none'
+                    keyboardType="email-address"
+                    autoCapitalize="none"
                 />
-                <View className='relative flex flex-row items-center gap-2'>
+                {}
+                {emailMessage && (
+                    <Text
+                        className={`text-start mt-2 ${
+                            emailMessage.includes('required') ? 'text-red-500' : 'text-green-500'
+                        }`}
+                    >
+                        {emailMessage}
+                    </Text>
+                )}
+
+                <View className="relative flex flex-row items-center gap-2">
                     <Input
-                        placeholder='Password'
+                        placeholder="Password"
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry={!showPassword}
-                        className='flex-1 pr-10 h-10'
+                        className="flex-1 pr-10 h-10"
                     />
                     <Button
-                        variant='ghost'
-                        size='icon'
-                        style={{ position: 'absolute', right: 8, top: '50%', transform: [{ translateY: '-50%' }] }}
+                        variant="ghost"
+                        size="icon"
+                        style={{
+                            position: 'absolute',
+                            right: 8,
+                            top: '50%',
+                            transform: [{ translateY: '-50%' }],
+                        }}
                         onPress={togglePasswordVisibility}
                     >
-                        {showPassword ? <Eye size={20} color='black' /> : <EyeOff size={20} color='black' />}
+                        {showPassword ? <Eye size={20} color="black" /> : <EyeOff size={20} color="black" />}
                     </Button>
                 </View>
+                {/* Display password-specific error/success message below the password input */}
+                {passwordMessage && (
+                    <Text className="text-start mt-2 text-red-500">
+                        {passwordMessage}
+                    </Text>
+                )}
 
-                <Button variant='default' size='default' onPress={handleLogin}>
+                <Button variant="default" size="default" onPress={handleLogin}>
                     <Text>Login</Text>
                 </Button>
 
-                <Separator className='mt-10' />
-                <Text className='text-sm text-center text-gray-400 font-semibold'>Or continue with</Text>
-                <View className='flex flex-row gap-5 justify-center '>
-                    <Button variant='default' size='icon' className='rounded-full bg-red-600'>
+                <Separator className="mt-10" />
+                <Text className="text-sm text-center text-gray-400 font-semibold">Or continue with</Text>
+                <View className="flex flex-row gap-5 justify-center ">
+                    <Button variant="default" size="icon" className="rounded-full bg-red-600">
                         <Text>G</Text>
                     </Button>
-                    <Button variant='default' size='icon' className='rounded-full bg-black'>
-                        <Apple size={15} color='white' />
+                    <Button variant="default" size="icon" className="rounded-full bg-black">
+                        <Apple size={15} color="white" />
                     </Button>
-                    <Button variant='default' size='icon' className='rounded-full'>
-                        <Facebook size={16} color='white' />
+                    <Button variant="default" size="icon" className="rounded-full">
+                        <Facebook size={16} color="white" />
                     </Button>
                 </View>
             </View>
