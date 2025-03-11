@@ -6,6 +6,9 @@ import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { Separator } from '~/components/ui/separator';
 import { Eye, EyeOff, Apple, Facebook } from 'lucide-react-native';
+import { login } from '~/lib/controllers/login_controller';
+import { getUserRole, getUserData } from '~/lib/controllers/fetchers';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function Login() {
     const navigation = useNavigation();
@@ -16,11 +19,36 @@ export default function Login() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+    const handleLogin = async () => {
+        try {
+            await login(emailAddress, password);
+            setEmailAddress('');
+            setPassword('');
+            const role = await getUserRole();
+            const user = await getUserData();
+            if (role === 'admin') {
+                Alert.alert('This app is for users only. Please use the web app for admin access.');
+            } else {
+                Alert.alert(`Welcome: ${user.name}`);
+                navigation.navigate('Landing');
+            }
+        } catch (error) {
+            Alert.alert('Login Error', error.message.toString());
+            console.error('Login error:', error);
+        }
+    };
 
     return (
         <View className='p-5'>
             <StatusBar hidden style='auto' />
-            <Image source={require('../assets/images/logo-adSpace.png')} className='w-full h-40 self-center mt-20 mb-10 ' />
+            <Image
+                source={
+                    useColorScheme().colorScheme === 'dark'
+                        ? require('../assets/images/logo-adSpaceLight.png')
+                        : require('../assets/images/logo-adSpaceDark.png')
+                }
+                className='w-full h-40 self-center mt-20 mb-10 sm:mb-10 md:mb-12 lg:mb-14 xl:mb-16'
+            />
             <Text className='text-4xl font-bold mb-2'>Welcome!</Text>
             <View className='flex flex-col gap-5 mt-5 '>
                 <Input
@@ -47,11 +75,8 @@ export default function Login() {
                         {showPassword ? <Eye size={20} color='black' /> : <EyeOff size={20} color='black' />}
                     </Button>
                 </View>
-                <Button variant='link' size='default' onPress={() => navigation.navigate('forgotPasswordScreen')}>
-                    <Text className='text-sm text-blue-400 font-semibold'>Forgot Password?</Text>
-                </Button>
 
-                <Button variant='default' size='default' onPress={() => navigation.navigate('Landing')}>
+                <Button variant='default' size='default' onPress={handleLogin}>
                     <Text>Login</Text>
                 </Button>
 

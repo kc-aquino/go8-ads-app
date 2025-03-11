@@ -40,7 +40,7 @@ export default function LandingScreen() {
                 <Text className='text-center text-gray-400 font-semibold'>The best place to advertise your products and services</Text>
             </View>
 
-            <View className='mb-10 px-5'>
+            <View className='px-5 mb-16'>
                 <Button variant='default' onPress={() => navigation.navigate('Notification')} className='w-full py-3'>
                     <Text className='text-white font-semibold'>Get Started</Text>
                 </Button>
