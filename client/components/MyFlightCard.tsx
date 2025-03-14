@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, Modal, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, TextInput, Modal, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import { Image } from 'expo-image';
 import { Search, XCircle } from 'lucide-react-native';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
@@ -21,12 +22,19 @@ interface UserData {
     role: string;
 }
 
+interface AdsData {
+    mediaUrl: string;
+    slot: string;
+    title: string;
+}
+
 interface MyFlightCardProps {
     flightSchedule: Flight[];
     userData: UserData;
+    adsData: AdsData[];
 }
 
-const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData }) => {
+const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData, adsData }) => {
     const { isDarkColorScheme } = useColorScheme();
     const [flightNumber, setFlightNumber] = useState<string>('');
     const [flightInfo, setFlightInfo] = useState<Flight | null>(null);
@@ -52,11 +60,18 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData })
     const { width, height } = Dimensions.get('window');
     const isPortrait = height > width;
 
+    // Find the ad with the slot equal to 'Bottom'
+    const SideAd = adsData?.find((ad: any) => ad.slot === 'Side');
+
+    // Construct the full URL for the GIF
+    const gifUrl = SideAd ? 'http://152.42.176.184' + SideAd.mediaUrl : null;
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     return (
         <Card className={`max-w-full mt-2 rounded-xl w-full ${isDarkColorScheme ? 'bg-gray-800' : 'bg-[#007AFF]'}`}>
             {!flightInfo ? (
                 <CardHeader className='items-center'>
-                    <CardTitle className={`text-3xl font-bold ${isDarkColorScheme ? 'text-white' : 'text-gray-100'}`}>
+                    <CardTitle className={`text-3xl font-bold ${isDarkColorScheme ? 'text-white' : 'text-gray-100'} text-center`}>
                         Good day, {userData?.name || 'User'}!
                     </CardTitle>
                     <CardDescription className={`mt-2 text-sm text-center w-full ${isDarkColorScheme ? 'text-gray-400' : 'text-white'}`}>
@@ -92,7 +107,7 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData })
                                 onChangeText={setFlightNumber}
                                 returnKeyType='done'
                                 blurOnSubmit={false}
-                                onSubmitEditing={handleSearchFlight} // Trigger search on "done"
+                                onSubmitEditing={handleSearchFlight}
                                 accessible
                                 accessibilityLabel='Enter flight number'
                             />
@@ -143,21 +158,32 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData })
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <View
                         style={{
-                            width: isPortrait ? width : height, // Full width/height based on orientation
-                            height: isPortrait ? height : width, // Full height/width based on orientation
-                            position: 'relative', // For absolute positioning of the close button
+                            width: isPortrait ? width : height,
+                            height: isPortrait ? height : width,
+                            position: 'relative',
                         }}
                     >
                         {/* Close Button */}
-                        <TouchableOpacity onPress={() => setIsModalVisible(false)} style={{ position: 'absolute', top: 20, right: 20, zIndex: 1 }}>
-                            <XCircle size={24} color='white' />
-                        </TouchableOpacity>
 
                         {/* Full-Size Image */}
-                        <Image
-                            source={require('~/assets/images/ads/BurgerKing_ad_2.png')}
-                            style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
-                        />
+                        <View>
+                            {isLoading && <ActivityIndicator size='small' color='#0000ff' />}
+                            <Image
+                                source={{ uri: gifUrl }}
+                                style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                                onLoad={() => setIsLoading(false)}
+                                onError={e => {
+                                    console.log('Failed to load image:', e);
+                                    setIsLoading(false);
+                                }}
+                            />
+                            <TouchableOpacity
+                                onPress={() => setIsModalVisible(false)}
+                                style={{ position: 'absolute', top: 20, right: 20, zIndex: 1 }}
+                            >
+                                <XCircle size={24} color='white' />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>

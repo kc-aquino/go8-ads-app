@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { User } from 'lucide-react-native';
 import { logout } from '~/lib/controllers/login_controller';
-import { getUserData } from '~/lib/controllers/fetchers';
+import { getUserData, getUserRole } from '~/lib/controllers/fetchers';
 
 const Drawer = createDrawerNavigator();
 
@@ -19,6 +19,7 @@ function CustomDrawerContent(props) {
     const [modalVisible, setModalVisible] = React.useState(false);
     const { isDarkColorScheme } = useColorScheme();
     const [userData, setUserData] = React.useState<any>(null);
+    const [userRole, setUserRole] = React.useState<any>(null);
 
     React.useEffect(() => {
         const fetchUserData = async () => {
@@ -26,7 +27,13 @@ function CustomDrawerContent(props) {
             setUserData(data);
         };
 
+        const fetchUserRole = async () => {
+            const data = await getUserRole();
+            setUserRole(data);
+        };
+
         fetchUserData();
+        fetchUserRole();
     }, []);
 
     const handleLogout = () => {
@@ -54,7 +61,7 @@ function CustomDrawerContent(props) {
                 >
                     {userData?.name || 'User'}
                 </Text>
-                {/* <Text style={{ fontSize: 16, color: 'gray' }}>{userData?.email || 'Email'}</Text>  Wala ata email mga users lol*/}
+                <Text style={{ fontSize: 16, color: 'gray' }}>{userRole || ''}</Text>
             </View>
             <DrawerItem label='Flight History' onPress={() => props.navigation.navigate('Main')} />
             <DrawerItem label='Announcement Log' onPress={() => props.navigation.navigate('Main')} />
