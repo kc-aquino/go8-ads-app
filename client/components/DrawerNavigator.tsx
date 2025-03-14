@@ -11,13 +11,23 @@ import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { User } from 'lucide-react-native';
 import { logout } from '~/lib/controllers/login_controller';
+import { getUserData } from '~/lib/controllers/fetchers';
 
 const Drawer = createDrawerNavigator();
-const GITHUB_AVATAR_URI = 'https://i.pinimg.com/236x/da/0b/74/da0b74e8ab5df78e54b3a0f5db603d29.jpg';
 
 function CustomDrawerContent(props) {
     const [modalVisible, setModalVisible] = React.useState(false);
     const { isDarkColorScheme } = useColorScheme();
+    const [userData, setUserData] = React.useState<any>(null);
+
+    React.useEffect(() => {
+        const fetchUserData = async () => {
+            const data = await getUserData();
+            setUserData(data);
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleLogout = () => {
         setModalVisible(false);
@@ -29,9 +39,9 @@ function CustomDrawerContent(props) {
         <DrawerContentScrollView {...props} scrollEnabled={false}>
             <View style={{ padding: 20, alignItems: 'center' }}>
                 <Avatar style={{ width: 150, height: 150 }} alt='Profile Avatar'>
-                    <AvatarImage source={{ uri: GITHUB_AVATAR_URI }} />
+                    <AvatarImage source={{ uri: userData?.profile }} />
                     <AvatarFallback>
-                        <User size={48} color='black' />
+                        <User size={80} color='black' />
                     </AvatarFallback>
                 </Avatar>
                 <Text
@@ -42,9 +52,9 @@ function CustomDrawerContent(props) {
                         color: isDarkColorScheme ? 'white' : 'black',
                     }}
                 >
-                    Mary Loi Yves Ricalde
+                    {userData?.name || 'User'}
                 </Text>
-                <Text style={{ fontSize: 16, color: 'gray' }}>@maryloiiii3</Text>
+                {/* <Text style={{ fontSize: 16, color: 'gray' }}>{userData?.email || 'Email'}</Text>  Wala ata email mga users lol*/}
             </View>
             <DrawerItem label='Flight History' onPress={() => props.navigation.navigate('Main')} />
             <DrawerItem label='Announcement Log' onPress={() => props.navigation.navigate('Main')} />

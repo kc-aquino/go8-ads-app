@@ -15,11 +15,18 @@ interface Flight {
     ETA_time: string;
 }
 
-interface MyFlightCardProps {
-    flightSchedule: Flight[];
+interface UserData {
+    name: string;
+    email: string;
+    role: string;
 }
 
-const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
+interface MyFlightCardProps {
+    flightSchedule: Flight[];
+    userData: UserData;
+}
+
+const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData }) => {
     const { isDarkColorScheme } = useColorScheme();
     const [flightNumber, setFlightNumber] = useState<string>('');
     const [flightInfo, setFlightInfo] = useState<Flight | null>(null);
@@ -29,7 +36,7 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
         if (flightNumber.trim() !== '') {
             const foundFlight = flightSchedule.find(flight => flight.flight === parseInt(flightNumber.trim(), 10));
             setFlightInfo(foundFlight || null);
-            setIsModalVisible(true); // Show the modal after searching
+            setIsModalVisible(true);
         } else {
             setFlightInfo(null);
         }
@@ -49,7 +56,9 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule }) => {
         <Card className={`max-w-full mt-2 rounded-xl w-full ${isDarkColorScheme ? 'bg-gray-800' : 'bg-[#007AFF]'}`}>
             {!flightInfo ? (
                 <CardHeader className='items-center'>
-                    <CardTitle className={`text-3xl font-bold ${isDarkColorScheme ? 'text-white' : 'text-gray-100'}`}>Good day, Maloi!</CardTitle>
+                    <CardTitle className={`text-3xl font-bold ${isDarkColorScheme ? 'text-white' : 'text-gray-100'}`}>
+                        Good day, {userData?.name || 'User'}!
+                    </CardTitle>
                     <CardDescription className={`mt-2 text-sm text-center w-full ${isDarkColorScheme ? 'text-gray-400' : 'text-white'}`}>
                         Search your flight number to show your flight information.
                     </CardDescription>
