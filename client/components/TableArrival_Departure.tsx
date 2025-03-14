@@ -45,20 +45,21 @@ const TableArrival_Departure = ({ flightSchedule }: TableArrival_DepartureProps)
                         <Table className='w-full min-w-full table-fixed border-separate'>
                             <TableHeader>
                                 <TableRow className={`${isDarkColorScheme ? 'bg-gray-700' : 'bg-[#1a8dd8]'}`}>
-                                    <TableCell className='px-4 py-2 w-1/4'>
+                                    <TableCell className='pl-4 py-3 w-1/4'>
                                         <Text className='text-white'>Destination</Text>
                                     </TableCell>
-                                    <TableCell className='px-4 py-2 w-1/4'>
+                                    <TableCell className='px-4 py-3 w-1/6'>
                                         <Text className='text-white'>Flight</Text>
                                     </TableCell>
-                                    <TableCell className='px-0 py-2 w-1/4'>
+                                    <TableCell className='px-4 py-3 w-1/4'>
                                         <Text className='text-white'>Airline</Text>
                                     </TableCell>
-                                    <TableCell className='px-6 py-2 w-1/4 whitespace-nowrap truncate'>
+                                    <TableCell className='px-4 py-3 w-1/4 whitespace-nowrap truncate'>
                                         <Text className='text-white'>{activeTab === 'Arrival' ? 'ETA' : 'Departure'}</Text>
                                     </TableCell>
                                 </TableRow>
                             </TableHeader>
+
                             {filteredFlights.map((flight, index) => (
                                 <TableRow
                                     key={index}
@@ -72,17 +73,19 @@ const TableArrival_Departure = ({ flightSchedule }: TableArrival_DepartureProps)
                                             : 'bg-[#d6ebfb]'
                                     }`}
                                 >
-                                    <TableCell className='px-4 py-2 w-1/4'>
-                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'}`}>{flight.destination}</Text>
+                                    <TableCell className='pl-4 py-3 w-1/4'>
+                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'} text-sm `}>{flight.destination}</Text>
                                     </TableCell>
-                                    <TableCell className='px-4 py-2 w-1/4'>
-                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'}`}>{flight.flight}</Text>
+                                    <TableCell className='px-0 py-3 w-1/6'>
+                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'} text-sm text-center`}>
+                                            {flight.flight}
+                                        </Text>
                                     </TableCell>
-                                    <TableCell className='px-0 py-2 w-1/4'>
-                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'}`}>{flight.airline}</Text>
+                                    <TableCell className='px-4 py-3 w-1/4'>
+                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'} text-sm `}>{flight.airline}</Text>
                                     </TableCell>
-                                    <TableCell className='px-6 py-2 w-1/4 whitespace-nowrap truncate'>
-                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'}`}>{flight.time}</Text>
+                                    <TableCell className='px-4 py-3 w-1/4 whitespace-nowrap truncate'>
+                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'} text-sm`}>{flight.time}</Text>
                                     </TableCell>
                                 </TableRow>
                             ))}
