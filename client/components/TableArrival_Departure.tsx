@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Table, TableRow, TableCell, TableHeader } from '~/components/ui/table';
 import { Text } from '~/components/ui/text';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { useColorScheme } from '~/lib/useColorScheme';
 
+// Preload images
+const airlineImages = {
+    'Singapore Airlines': require('../assets/images/airlines/singapore_airlines.png'),
+    'Japan Airlines': require('../assets/images/airlines/jal.png'),
+    'Delta Airlines': require('../assets/images/airlines/delta.png'),
+    'American Airlines': require('../assets/images/airlines/american_airlines.png'),
+    'United Airlines': require('../assets/images/airlines/united.png'),
+    'JetBlue Airways': require('../assets/images/airlines/jetblue.png'),
+    'Air France': require('../assets/images/airlines/airfrance.png'),
+};
+
 interface Flight {
     destination: string;
     flight: number;
+    airline: string; // Path to the airline logo
     airlineName: string;
     departureDate: string;
     departureTime: string;
@@ -28,7 +40,8 @@ const TableArrival_Departure = ({ flightSchedule }: TableArrival_DepartureProps)
     const filteredFlights = flightSchedule.map(flight => ({
         destination: flight.destination,
         flight: flight.flight,
-        airline: flight.airlineName,
+        airline: flight.airline, // Use the correct path
+        airlineName: flight.airlineName,
         time: activeTab === 'Arrival' ? `${flight.ETA_date} ${flight.ETA_time}` : `${flight.departureDate} ${flight.departureTime}`,
     }));
 
@@ -82,7 +95,7 @@ const TableArrival_Departure = ({ flightSchedule }: TableArrival_DepartureProps)
                                         </Text>
                                     </TableCell>
                                     <TableCell className='px-4 py-3 w-1/4'>
-                                        <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'} text-sm `}>{flight.airline}</Text>
+                                        <Image source={airlineImages[flight.airlineName]} style={{ width: 80, height: 30, resizeMode: 'stretch' }} />
                                     </TableCell>
                                     <TableCell className='px-4 py-3 w-1/4 whitespace-nowrap truncate'>
                                         <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'} text-sm`}>{flight.time}</Text>
