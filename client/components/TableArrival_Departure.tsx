@@ -67,7 +67,7 @@ const TableArrival_Departure = ({ flightSchedule }: TableArrival_DepartureProps)
                                     <TableCell className='px-4 py-3 w-1/4'>
                                         <Text className='text-white'>Airline</Text>
                                     </TableCell>
-                                    <TableCell className='px-4 py-3 w-1/4 whitespace-nowrap truncate'>
+                                    <TableCell className='px-6 py-3 w-1/4 whitespace-nowrap truncate'>
                                         <Text className='text-white'>{activeTab === 'Arrival' ? 'ETA' : 'Departure'}</Text>
                                     </TableCell>
                                 </TableRow>
@@ -97,7 +97,7 @@ const TableArrival_Departure = ({ flightSchedule }: TableArrival_DepartureProps)
                                     <TableCell className='px-4 py-3 w-1/4'>
                                         <Image source={airlineImages[flight.airlineName]} style={{ width: 80, height: 30, resizeMode: 'stretch' }} />
                                     </TableCell>
-                                    <TableCell className='px-4 py-3 w-1/4 whitespace-nowrap truncate'>
+                                    <TableCell className='px-6 py-3 w-1/4 whitespace-nowrap truncate'>
                                         <Text className={`${isDarkColorScheme ? 'text-gray-300' : 'text-black'} text-sm`}>{flight.time}</Text>
                                     </TableCell>
                                 </TableRow>

@@ -7,6 +7,7 @@ import MyFlightCard from '~/components/MyFlightCard';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { AnnouncementComponent } from '~/components/AnnouncementComponent';
 import { getUserData, getAdsData } from '~/lib/controllers/fetchers';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Screen() {
     const colorScheme = useColorScheme().colorScheme;
@@ -18,21 +19,19 @@ export default function Screen() {
     const [adsData, setAdsData] = React.useState<any>(null);
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const data = await getUserData();
-            setUserData(data);
-        };
+    const fetchData = async () => {
+        const userData = await getUserData();
+        const adsData = await getAdsData();
+        setUserData(userData);
+        setAdsData(adsData);
+        setIsLoading(false);
+    };
 
-        const fetchAdsData = async () => {
-            const data = await getAdsData();
-            setAdsData(data);
-            console.log('Ads: ', data);
-        };
-
-        fetchUserData();
-        fetchAdsData();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchData();
+        }, [])
+    );
 
     // Find the ad with the slot equal to 'Bottom'
     const bottomAd = adsData?.find((ad: any) => ad.slot === 'Bottom');

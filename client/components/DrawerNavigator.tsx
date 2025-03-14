@@ -21,24 +21,26 @@ function CustomDrawerContent(props) {
     const [userData, setUserData] = React.useState<any>(null);
     const [userRole, setUserRole] = React.useState<any>(null);
 
+    const fetchUserData = async () => {
+        const data = await getUserData();
+        setUserData(data);
+    };
+
+    const fetchUserRole = async () => {
+        const data = await getUserRole();
+        setUserRole(data);
+    };
+
     React.useEffect(() => {
-        const fetchUserData = async () => {
-            const data = await getUserData();
-            setUserData(data);
-        };
-
-        const fetchUserRole = async () => {
-            const data = await getUserRole();
-            setUserRole(data);
-        };
-
         fetchUserData();
         fetchUserRole();
-    }, []);
+    }, [props.navigation]);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         setModalVisible(false);
-        logout();
+        await logout();
+        setUserData(null);
+        setUserRole(null);
         props.navigation.navigate('Login');
     };
 

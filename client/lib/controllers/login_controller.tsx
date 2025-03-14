@@ -42,6 +42,12 @@ export async function logout() {
     await SecureStore.deleteItemAsync('data');
     await SecureStore.deleteItemAsync('username');
     await SecureStore.deleteItemAsync('password');
+    await SecureStore.deleteItemAsync('role');
+    await SecureStore.deleteItemAsync('userId');
+    await SecureStore.deleteItemAsync('userScreen');
+    await SecureStore.deleteItemAsync('userAds');
+    await SecureStore.deleteItemAsync('userProfile');
+    await SecureStore.deleteItemAsync('userRole');
 }
 
 //! Temperory

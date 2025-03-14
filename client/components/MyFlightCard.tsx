@@ -5,6 +5,7 @@ import { Search, XCircle } from 'lucide-react-native';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
 import { useColorScheme } from '~/lib/useColorScheme';
+import { Input } from '~/components/ui/input';
 
 interface Flight {
     destination: string;
@@ -52,8 +53,8 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData, a
 
     const FlightInfoItem: React.FC<{ label: string; value?: string | number }> = ({ label, value }) => (
         <View className='w-1/3 py-1'>
-            <Text className={`text-xs font-bold ${isDarkColorScheme ? 'text-gray-300' : 'text-gray-700'}`}>{label}</Text>
-            <Text className={`text-sm ${isDarkColorScheme ? 'text-white' : 'text-black'}`}>{value || 'N/A'}</Text>
+            <Text className={`text-xs font-bold text-white`}>{label}</Text>
+            <Text className={`text-sm text-white`}>{value || 'N/A'}</Text>
         </View>
     );
 
@@ -79,7 +80,7 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData, a
                     </CardDescription>
                     <View className={`mt-4 flex-row items-center rounded-lg px-3 ${isDarkColorScheme ? 'bg-slate-700' : 'bg-white'}`}>
                         <Search size={16} color={isDarkColorScheme ? 'lightgray' : 'gray'} />
-                        <TextInput
+                        <Input
                             className={`ml-3 text-sm flex-1 ${isDarkColorScheme ? 'text-white' : 'text-black'}`}
                             placeholder='Search flight number'
                             placeholderTextColor={isDarkColorScheme ? 'lightgray' : 'gray'}
@@ -99,7 +100,7 @@ const MyFlightCard: React.FC<MyFlightCardProps> = ({ flightSchedule, userData, a
                         <CardTitle className={`text-2xl font-bold ${isDarkColorScheme ? 'text-white' : 'text-gray-100'}`}>My Flight</CardTitle>
                         <View className={`flex-row items-center rounded-lg px-2 pr-4 ${isDarkColorScheme ? 'bg-gray-800' : 'bg-white'}`}>
                             <Search size={12} color={isDarkColorScheme ? 'lightgray' : 'gray'} />
-                            <TextInput
+                            <Input
                                 className={`ml-2 text-xs ${isDarkColorScheme ? 'text-white' : 'text-black'}`}
                                 placeholder='Flight #'
                                 placeholderTextColor={isDarkColorScheme ? 'lightgray' : 'gray'}
