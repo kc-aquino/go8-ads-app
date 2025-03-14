@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "client",
-    "slug": "client",
+    "slug": "go8adsmobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.parayno.client"
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +36,17 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "apiUrl": "http://152.42.176.184",
+      "socketUrl": "ws://152.42.176.184:3000",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "16d57f5f-ba5c-41ed-924b-7f2016f05b59"
+      }
+    },
+    "owner": "parayno"
   }
 }

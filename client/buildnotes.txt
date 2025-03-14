@@ -1,0 +1,3 @@
+before building the app
+    npx expo prebuild
+    npx eas build --profile production -p  android
