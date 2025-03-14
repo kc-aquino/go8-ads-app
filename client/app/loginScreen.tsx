@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StatusBar } from 'react-native';
+import { Image, View, StatusBar, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -9,6 +9,7 @@ import { Eye, EyeOff, Apple, Facebook } from 'lucide-react-native';
 import { login } from '~/lib/controllers/login_controller';
 import { getUserRole, getUserData } from '~/lib/controllers/fetchers';
 import { useColorScheme } from '~/lib/useColorScheme';
+import Constants from 'expo-constants';
 
 const ErrorMessage = ({ message }: { message: string }) => (
     <Text className={`text-start mb-2 ${message.includes('required') ? 'text-red-500' : 'text-green-500'}`}>
@@ -52,6 +53,9 @@ export default function Login() {
     const [emailMessage, setEmailMessage] = React.useState<string | null>(null);
     const [passwordMessage, setPasswordMessage] = React.useState<string | null>(null);
     const [loginError, setLoginError] = React.useState<string | null>(null);
+    const extra = Constants.manifest?.extra || Constants.expoConfig?.extra;
+    const socketUrl = extra?.socketUrl;
+    const apiEndpoint = extra?.apiUrl;
 
     const resetMessages = () => {
         setEmailMessage(null);
@@ -78,6 +82,7 @@ export default function Login() {
 
         try {
             await login(emailAddress, password);
+            
             setEmailAddress('');
             setPassword('');
             const role = await getUserRole();
