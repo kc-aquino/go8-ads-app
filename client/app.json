@@ -2,8 +2,8 @@
     "expo": {
         "name": "Go8-AdSpace",
         "slug": "go8-adspace-app",
-        "version": "1.1.0",
-        "orientation": "portrait",
+        "version": "1.1.0", // 1.1.0 last version
+        "orientation": "porrait",
         "icon": "./assets/images/icon.png",
         "scheme": "myapp",
         "userInterfaceStyle": "automatic",
