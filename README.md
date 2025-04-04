@@ -15,8 +15,6 @@ This is the mobile application built with React Native using Expo for the **go8-
 - **NativeWind** (Tailwind for React Native)
 - **react-native-reusables** (Shadcn for React Native)
 - **Laravel** (Backend for database connection and API)
-- **JWT Authentication** for secure login
-- **API Endpoints** for user and ad management
 
 ## Getting Started
 
@@ -29,3 +27,20 @@ This is the mobile application built with React Native using Expo for the **go8-
    ```bash
    git clone https://github.com/kc-aquino/go8-ads-app
    cd go8-ads-app
+   npm install
+   expo start
+
+### Website
+   ```bash
+      git clone https://github.com/kairo-18/go8-ads-nestjs
+      cd go8-ads-nestjs
+      npm install
+      docker-compose up
+      # Set up .env file
+      npm run start:dev
+   ```
+## Notes
+- Ensure you have the backend running to fully test the app features.
+- The app is designed for easy navigation and ad management, but requires the API to be up and running for data fetching and user interaction.
+
+License: This project is open-source under the MIT License.
